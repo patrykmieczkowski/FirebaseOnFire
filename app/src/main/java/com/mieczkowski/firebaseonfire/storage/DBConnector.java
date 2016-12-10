@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mieczkowski.firebaseonfire.Question;
 import com.mieczkowski.firebaseonfire.WearAdvisor;
 
 import java.util.HashMap;
@@ -114,6 +115,16 @@ public enum DBConnector {
                 callback.on(dataSnapshot.getValue(String.class));
             }
         });
+    }
+
+    public void askQuestion(Question question) {
+
+        Map<String, Object> update = new HashMap<>();
+        update.put("ask/" + question.id, question);
+        update.put("users/" + question.owner + "/lastAsk", question.timestamp);
+
+        database.getReference()
+                .updateChildren(update);
     }
 
     public interface Cancellable {

@@ -35,4 +35,22 @@
         android:layout_below="@id/edit_username"
         android:layout_centerHorizontal="true"
         android:text="SAVE IT"/>
+
+    <EditText
+        android:id="@+id/ask_question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"/>
+
+    <Button
+        android:id="@+id/button_ask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ask_question"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="8dp"
+        android:text="Ask question"/>
+
 </RelativeLayout>

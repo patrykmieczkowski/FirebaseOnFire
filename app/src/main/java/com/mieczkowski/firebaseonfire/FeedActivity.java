@@ -17,9 +17,13 @@ public class FeedActivity extends AppCompatActivity {
 
     private static final String TAG = FeedActivity.class.getSimpleName();
     @BindView(R.id.button_save) Button saveButton;
+    @BindView(R.id.button_ask) Button askQuestionButton;
     @BindView(R.id.edit_username) EditText editUsername;
+    @BindView(R.id.ask_question) EditText askQuestionEdit;
 
     DBConnector.Cancellable nameCancelable;
+
+    PushIdGenerator pig = new PushIdGenerator();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +38,16 @@ public class FeedActivity extends AppCompatActivity {
         DBConnector.INSTANCE.setUserName(uid, editUsername.getText().toString());
     }
 
+    @OnClick(R.id.button_ask)
+    public void hitAskQuestionAction() {
+        String uid = DBConnector.INSTANCE.getUid();
+        Question question = new Question(pig.getpushID(),
+                uid,
+                askQuestionEdit.getText().toString(),
+                System.currentTimeMillis());
+        DBConnector.INSTANCE.askQuestion(question);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -45,6 +59,7 @@ public class FeedActivity extends AppCompatActivity {
                 editUsername.setText(s);
             }
         });
+
     }
 
     @Override

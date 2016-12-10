@@ -102,4 +102,44 @@ public enum DBConnector {
                 });
     }
 
+    public Cancellable observeName(String uid, final Callback<String> callback) {
+        DatabaseReference reference = database.getReference()
+                .child("users")
+                .child(uid)
+                .child("name");
+
+        return observeReference(reference, new Callback<DataSnapshot>() {
+            @Override
+            public void on(DataSnapshot dataSnapshot) {
+                callback.on(dataSnapshot.getValue(String.class));
+            }
+        });
+    }
+
+    public interface Cancellable {
+        void cancel();
+    }
+
+    public Cancellable observeReference(final DatabaseReference reference,
+                                        final Callback<DataSnapshot> callback) {
+
+        final ValueEventListener listener = reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                callback.on(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        return new Cancellable() {
+            @Override
+            public void cancel() {
+                reference.removeEventListener(listener);
+            }
+        };
+    }
+
 }

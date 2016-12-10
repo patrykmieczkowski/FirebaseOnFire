@@ -1,0 +1,17 @@
+type ShortString extends String {
+  validate() { this.length < 12 }
+}
+
+type MalyString extends ShortString{
+  validate() { this.test(/^[a-zA-Z]+$/) }
+}
+
+path / {
+    read() { auth != null }
+}
+
+path /users/{uid}/name is MalyString {
+
+  write() { auth.uid == uid }
+
+}
